@@ -2,6 +2,8 @@ package pl.kwako.metroid_map.metroid_map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -20,6 +22,8 @@ public class MapPanel extends JPanel {
     public MapPanel(WindowCoordinateTranslator windowCoordinateTranslator,
                     ImageCoordinateTranslator imageCoordinate) throws IOException {
 
+        setBackground(new Color(32, 32, 32));
+
         windowCoordinate = windowCoordinateTranslator;
         this.imageCoordinate = imageCoordinate;
         try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("MetroidCompleateMapBG.png")) {
@@ -30,34 +34,34 @@ public class MapPanel extends JPanel {
     private void drawMapBackgound(Graphics2D g2d) {
         for (int x = 0; x < ROOMS_SIZE_X; ++x) {
             for (int y = 0; y < ROOMS_SIZE_Y; ++y) {
-                drawRoom(g2d, mapImage, x, y);
+                drawRoom(g2d, x, y);
             }
         }
     }
 
     private void drawGrid(Graphics2D g2d) {
-        for (int x = 1; x < ROOMS_SIZE_X; ++x) {
+        for (int x = 0; x <= ROOMS_SIZE_X; ++x) {
             g2d.drawLine(
                     windowCoordinate.toWindowX(this, x),
-                    windowCoordinate.toWindowY(this, 0),
+                    0,
                     windowCoordinate.toWindowX(this, x),
-                    windowCoordinate.toWindowY(this, ROOMS_SIZE_Y)
+                    getHeight()
             );
         }
 
-        for (int y = 1; y < ROOMS_SIZE_Y; ++y) {
+        for (int y = 0; y <= ROOMS_SIZE_Y; ++y) {
             g2d.drawLine(
-                    windowCoordinate.toWindowX(this, 0),
+                    0,
                     windowCoordinate.toWindowY(this, y),
-                    windowCoordinate.toWindowX(this, ROOMS_SIZE_X),
+                    getWidth(),
                     windowCoordinate.toWindowY(this, y)
             );
         }
     }
 
-    private void drawRoom(Graphics2D g2d, BufferedImage image, int x, int y) {
+    private void drawRoom(Graphics2D g2d, int x, int y) {
         g2d.drawImage(
-                image,
+                mapImage,
                 windowCoordinate.toWindowX(this, x), // x of 1st corner of room in a window
                 windowCoordinate.toWindowY(this, y), // y of 1st conrner of room in a window
                 windowCoordinate.toWindowX(this, x + 1), // x of 2nd corner of room in a window

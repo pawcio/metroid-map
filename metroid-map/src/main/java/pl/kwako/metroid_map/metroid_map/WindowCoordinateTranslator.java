@@ -55,15 +55,15 @@ public class WindowCoordinateTranslator {
         yOffset -= MOVE_STEP;
     }
 
-    public int toWindowX(Component component, int x) {
+    public int toWindowX(Component component, int mapX) {
         return xOffset
-                + zoom * x
+                + zoom * mapX
                 + component.getWidth() / 2;
     }
 
-    public int toWindowY(Component component, int y) {
+    public int toWindowY(Component component, int mapY) {
         return yOffset
-                + zoom * y
+                + zoom * mapY
                 + component.getHeight() / 2;
     }
 }
