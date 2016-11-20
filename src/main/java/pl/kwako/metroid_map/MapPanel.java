@@ -25,6 +25,8 @@ public class MapPanel extends JPanel {
 
         windowCoordinate = windowCoordinateTranslator;
         this.imageCoordinate = imageCoordinate;
+
+        // TODO: implement loading map definition from file.
         try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("MetroidCompleateMapBG.png")) {
             mapImage = ImageIO.read(resourceAsStream);
         }
