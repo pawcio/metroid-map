@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.metroid_map;
+package pl.kwako.metroid_map;
 
 import java.awt.Component;
 

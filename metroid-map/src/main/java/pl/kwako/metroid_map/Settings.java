@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.metroid_map;
+package pl.kwako.metroid_map;
 
 public class Settings {
     public static final int ROOMS_SIZE_X = 30;

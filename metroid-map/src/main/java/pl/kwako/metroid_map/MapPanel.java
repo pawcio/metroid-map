@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.metroid_map;
+package pl.kwako.metroid_map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -9,9 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static pl.kwako.metroid_map.metroid_map.Settings.ROOMS_SIZE_X;
-import static pl.kwako.metroid_map.metroid_map.Settings.ROOMS_SIZE_Y;
 
 public class MapPanel extends JPanel {
 
@@ -34,15 +31,15 @@ public class MapPanel extends JPanel {
     }
 
     private void drawMapBackgound(Graphics2D g2d) {
-        for (int x = 0; x < ROOMS_SIZE_X; ++x) {
-            for (int y = 0; y < ROOMS_SIZE_Y; ++y) {
+        for (int x = 0; x < Settings.ROOMS_SIZE_X; ++x) {
+            for (int y = 0; y < Settings.ROOMS_SIZE_Y; ++y) {
                 drawRoom(g2d, x, y);
             }
         }
     }
 
     private void drawGrid(Graphics2D g2d) {
-        for (int x = 0; x <= ROOMS_SIZE_X; ++x) {
+        for (int x = 0; x <= Settings.ROOMS_SIZE_X; ++x) {
             g2d.drawLine(
                     windowCoordinate.toWindowX(this, x),
                     0,
@@ -51,7 +48,7 @@ public class MapPanel extends JPanel {
             );
         }
 
-        for (int y = 0; y <= ROOMS_SIZE_Y; ++y) {
+        for (int y = 0; y <= Settings.ROOMS_SIZE_Y; ++y) {
             g2d.drawLine(
                     0,
                     windowCoordinate.toWindowY(this, y),
@@ -115,8 +112,8 @@ public class MapPanel extends JPanel {
             mapX = 0;
         }
 
-        if (mapX >= ROOMS_SIZE_X) {
-            mapX = ROOMS_SIZE_X - 1;
+        if (mapX >= Settings.ROOMS_SIZE_X) {
+            mapX = Settings.ROOMS_SIZE_X - 1;
         }
 
         int x1 = windowCoordinate.toWindowX(this, mapX);
@@ -128,8 +125,8 @@ public class MapPanel extends JPanel {
             mapY = 0;
         }
 
-        if (mapY >= ROOMS_SIZE_Y) {
-            mapY = ROOMS_SIZE_Y - 1;
+        if (mapY >= Settings.ROOMS_SIZE_Y) {
+            mapY = Settings.ROOMS_SIZE_Y - 1;
         }
 
         int y1 = windowCoordinate.toWindowY(this, mapY);
