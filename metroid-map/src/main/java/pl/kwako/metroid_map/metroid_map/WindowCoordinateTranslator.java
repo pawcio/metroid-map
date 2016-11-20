@@ -66,4 +66,14 @@ public class WindowCoordinateTranslator {
                 + zoom * mapY
                 + component.getHeight() / 2;
     }
+
+    public int toMapX(Component component, int windowX) {
+        return (windowX - component.getWidth() / 2 - xOffset)
+                / zoom;
+    }
+
+    public int toMapY(Component component, int windowY) {
+        return (windowY - component.getHeight() / 2 - yOffset)
+                / zoom;
+    }
 }

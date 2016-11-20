@@ -17,10 +17,12 @@ public class MapPanel extends JPanel {
 
     private final WindowCoordinateTranslator windowCoordinate;
     private final ImageCoordinateTranslator imageCoordinate;
+    private final MouseState mouseState;
     private final BufferedImage mapImage;
 
     public MapPanel(WindowCoordinateTranslator windowCoordinateTranslator,
-                    ImageCoordinateTranslator imageCoordinate) throws IOException {
+                    ImageCoordinateTranslator imageCoordinate, MouseState mouseState) throws IOException {
+        this.mouseState = mouseState;
 
         setBackground(new Color(32, 32, 32));
 
@@ -81,9 +83,84 @@ public class MapPanel extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g.create();
 
+        updateZoom();
         drawMapBackgound(g2d);
         drawGrid(g2d);
+        drawCursor(g2d);
 
         g2d.dispose();
+    }
+
+    private void updateZoom() {
+        int wheelRotation = mouseState.popWheelRotation() * 2;
+
+        if (wheelRotation > 0) {
+            for (int i = 0; i < wheelRotation; ++i) {
+                windowCoordinate.zoomOut();
+            }
+        }
+
+        if (wheelRotation < 0) {
+            for (int i = 0; i > wheelRotation; --i) {
+                windowCoordinate.zoomIn();
+            }
+        }
+    }
+
+    private void drawCursor(Graphics2D g2d) {
+
+        int mapX = windowCoordinate.toMapX(this, mouseState.getX());
+
+        if (mapX < 0) {
+            mapX = 0;
+        }
+
+        if (mapX >= ROOMS_SIZE_X) {
+            mapX = ROOMS_SIZE_X - 1;
+        }
+
+        int x1 = windowCoordinate.toWindowX(this, mapX);
+        int x2 = windowCoordinate.toWindowX(this, 1 + mapX);
+
+        int mapY = windowCoordinate.toMapY(this, mouseState.getY());
+
+        if (mapY < 0) {
+            mapY = 0;
+        }
+
+        if (mapY >= ROOMS_SIZE_Y) {
+            mapY = ROOMS_SIZE_Y - 1;
+        }
+
+        int y1 = windowCoordinate.toWindowY(this, mapY);
+        int y2 = windowCoordinate.toWindowY(this, 1 + mapY);
+
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        g2d.drawRect(
+                x1,
+                y1,
+                Math.abs(x2 - x1),
+                Math.abs(y2 - y1));
+
+        g2d.setColor(Color.RED);
+        g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        g2d.drawRect(
+                x1,
+                y1,
+                Math.abs(x2 - x1),
+                Math.abs(y2 - y1));
+
+        g2d.setColor(Color.PINK);
+        g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        g2d.drawRect(
+                x1,
+                y1,
+                Math.abs(x2 - x1),
+                Math.abs(y2 - y1));
+
     }
 }

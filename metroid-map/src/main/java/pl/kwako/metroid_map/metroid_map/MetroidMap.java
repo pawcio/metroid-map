@@ -1,8 +1,6 @@
 package pl.kwako.metroid_map.metroid_map;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.IOException;
 
@@ -15,9 +13,11 @@ public class MetroidMap extends JFrame {
 
         WindowCoordinateTranslator windowCoordinateTranslator = new WindowCoordinateTranslator();
 
+        MouseOverMapListener mouseOverMapListener = new MouseOverMapListener(this);
+
         MapPanel mapPanel = new MapPanel(
                 windowCoordinateTranslator,
-                new ImageCoordinateTranslator());
+                new ImageCoordinateTranslator(), mouseOverMapListener);
 
         KeyPressListener keyPressListener = new KeyPressListener(
                 windowCoordinateTranslator,
@@ -27,6 +27,8 @@ public class MetroidMap extends JFrame {
         add(mapPanel);
 
         addKeyListener(keyPressListener);
+        addMouseMotionListener(mouseOverMapListener);
+        addMouseWheelListener(mouseOverMapListener);
 
         setTitle("Metroid Map");
         setSize(
