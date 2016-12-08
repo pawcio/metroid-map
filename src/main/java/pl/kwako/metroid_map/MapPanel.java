@@ -1,6 +1,7 @@
 package pl.kwako.metroid_map;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -12,19 +13,21 @@ import java.io.InputStream;
 
 public class MapPanel extends JPanel {
 
-    private final WindowCoordinateTranslator windowCoordinate;
+    private final WindowCoordinateTranslator windowCoordinateTranslator;
     private final ImageCoordinateTranslator imageCoordinate;
-    private final MouseState mouseState;
+    private final Settings settings;
     private final BufferedImage mapImage;
+    private MouseState mouseState;
 
+    @Inject
     public MapPanel(WindowCoordinateTranslator windowCoordinateTranslator,
-                    ImageCoordinateTranslator imageCoordinate, MouseState mouseState) throws IOException {
-        this.mouseState = mouseState;
+                    ImageCoordinateTranslator imageCoordinate, Settings settings) throws IOException {
+
+        this.windowCoordinateTranslator = windowCoordinateTranslator;
+        this.imageCoordinate = imageCoordinate;
+        this.settings = settings;
 
         setBackground(new Color(32, 32, 32));
-
-        windowCoordinate = windowCoordinateTranslator;
-        this.imageCoordinate = imageCoordinate;
 
         // TODO: implement loading map definition from file.
         try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("MetroidCompleateMapBG.png")) {
@@ -32,30 +35,34 @@ public class MapPanel extends JPanel {
         }
     }
 
+    public void setMouseState(MouseState mouseState) {
+        this.mouseState = mouseState;
+    }
+
     private void drawMapBackgound(Graphics2D g2d) {
-        for (int x = 0; x < Settings.ROOMS_SIZE_X; ++x) {
-            for (int y = 0; y < Settings.ROOMS_SIZE_Y; ++y) {
+        for (int x = 0; x < settings.roomsSizeX(); ++x) {
+            for (int y = 0; y < settings.roomsSizeY(); ++y) {
                 drawRoom(g2d, x, y);
             }
         }
     }
 
     private void drawGrid(Graphics2D g2d) {
-        for (int x = 0; x <= Settings.ROOMS_SIZE_X; ++x) {
+        for (int x = 0; x <= settings.roomsSizeX(); ++x) {
             g2d.drawLine(
-                    windowCoordinate.toWindowX(this, x),
+                    windowCoordinateTranslator.toWindowX(this, x),
                     0,
-                    windowCoordinate.toWindowX(this, x),
+                    windowCoordinateTranslator.toWindowX(this, x),
                     getHeight()
             );
         }
 
-        for (int y = 0; y <= Settings.ROOMS_SIZE_Y; ++y) {
+        for (int y = 0; y <= settings.roomsSizeY(); ++y) {
             g2d.drawLine(
                     0,
-                    windowCoordinate.toWindowY(this, y),
+                    windowCoordinateTranslator.toWindowY(this, y),
                     getWidth(),
-                    windowCoordinate.toWindowY(this, y)
+                    windowCoordinateTranslator.toWindowY(this, y)
             );
         }
     }
@@ -63,10 +70,10 @@ public class MapPanel extends JPanel {
     private void drawRoom(Graphics2D g2d, int x, int y) {
         g2d.drawImage(
                 mapImage,
-                windowCoordinate.toWindowX(this, x), // x of 1st corner of room in a window
-                windowCoordinate.toWindowY(this, y), // y of 1st conrner of room in a window
-                windowCoordinate.toWindowX(this, x + 1), // x of 2nd corner of room in a window
-                windowCoordinate.toWindowY(this, y + 1), // y of 2nd conrner of room in a window
+                windowCoordinateTranslator.toWindowX(this, x), // x of 1st corner of room in a window
+                windowCoordinateTranslator.toWindowY(this, y), // y of 1st conrner of room in a window
+                windowCoordinateTranslator.toWindowX(this, x + 1), // x of 2nd corner of room in a window
+                windowCoordinateTranslator.toWindowY(this, y + 1), // y of 2nd conrner of room in a window
 
                 imageCoordinate.toImageX(x), // x of 1st corner of room in image
                 imageCoordinate.toImageY(y), // y of 1st conrner of room in image
@@ -95,44 +102,44 @@ public class MapPanel extends JPanel {
 
         if (wheelRotation > 0) {
             for (int i = 0; i < wheelRotation; ++i) {
-                windowCoordinate.zoomOut();
+                windowCoordinateTranslator.zoomOut();
             }
         }
 
         if (wheelRotation < 0) {
             for (int i = 0; i > wheelRotation; --i) {
-                windowCoordinate.zoomIn();
+                windowCoordinateTranslator.zoomIn();
             }
         }
     }
 
     private void drawCursor(Graphics2D g2d) {
 
-        int mapX = windowCoordinate.toMapX(this, mouseState.getX());
+        int mapX = windowCoordinateTranslator.toMapX(this, mouseState.getX());
 
         if (mapX < 0) {
             mapX = 0;
         }
 
-        if (mapX >= Settings.ROOMS_SIZE_X) {
-            mapX = Settings.ROOMS_SIZE_X - 1;
+        if (mapX >= settings.roomsSizeX()) {
+            mapX = settings.roomsSizeX() - 1;
         }
 
-        int x1 = windowCoordinate.toWindowX(this, mapX);
-        int x2 = windowCoordinate.toWindowX(this, 1 + mapX);
+        int x1 = windowCoordinateTranslator.toWindowX(this, mapX);
+        int x2 = windowCoordinateTranslator.toWindowX(this, 1 + mapX);
 
-        int mapY = windowCoordinate.toMapY(this, mouseState.getY());
+        int mapY = windowCoordinateTranslator.toMapY(this, mouseState.getY());
 
         if (mapY < 0) {
             mapY = 0;
         }
 
-        if (mapY >= Settings.ROOMS_SIZE_Y) {
-            mapY = Settings.ROOMS_SIZE_Y - 1;
+        if (mapY >= settings.roomsSizeY()) {
+            mapY = settings.roomsSizeY() - 1;
         }
 
-        int y1 = windowCoordinate.toWindowY(this, mapY);
-        int y2 = windowCoordinate.toWindowY(this, 1 + mapY);
+        int y1 = windowCoordinateTranslator.toWindowY(this, mapY);
+        int y2 = windowCoordinateTranslator.toWindowY(this, 1 + mapY);
 
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

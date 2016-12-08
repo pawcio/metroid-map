@@ -1,11 +1,14 @@
 package pl.kwako.metroid_map;
 
+
+import javax.inject.Singleton;
 import java.awt.Component;
 
 /**
  * Mutable class
  * stores info about offset and zoom
  */
+@Singleton
 public class WindowCoordinateTranslator {
 
     private static final int MOVE_STEP = 16;
@@ -13,7 +16,6 @@ public class WindowCoordinateTranslator {
     private int zoom = 128;
     private int xOffset = -512;
     private int yOffset = -512;
-
 
     public void zoomIn() {
 

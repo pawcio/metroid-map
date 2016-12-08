@@ -1,42 +1,53 @@
 package pl.kwako.metroid_map;
 
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.EventQueue;
-import java.io.IOException;
+import java.awt.event.KeyListener;
 
 public class MetroidMap extends JFrame {
 
-    private MetroidMap() throws IOException {
+    private final WindowCoordinateTranslator windowCoordinateTranslator;
+    private final MapPanel mapPanel;
 
-        WindowCoordinateTranslator windowCoordinateTranslator = new WindowCoordinateTranslator();
+    @PostConstruct
+    public void setupListeners() {
+        KeyListener keyPressListener = new KeyPressListener(windowCoordinateTranslator, this);
+        addKeyListener(keyPressListener);
 
         MouseOverMapListener mouseOverMapListener = new MouseOverMapListener(this);
+        addMouseMotionListener(mouseOverMapListener);
+        addMouseWheelListener(mouseOverMapListener);
+        mapPanel.setMouseState(mouseOverMapListener);
+    }
 
-        MapPanel mapPanel = new MapPanel(
-                windowCoordinateTranslator,
-                new ImageCoordinateTranslator(), mouseOverMapListener);
-
-        KeyPressListener keyPressListener = new KeyPressListener(
-                windowCoordinateTranslator,
-                this
-        );
+    @Inject
+    public MetroidMap(WindowCoordinateTranslator windowCoordinateTranslator,
+                      MapPanel mapPanel,
+                      Settings settings) {
+        super("Metroid Map");
+        this.windowCoordinateTranslator = windowCoordinateTranslator;
+        this.mapPanel = mapPanel;
 
         add(mapPanel);
 
-        addKeyListener(keyPressListener);
-        addMouseMotionListener(mouseOverMapListener);
-        addMouseWheelListener(mouseOverMapListener);
-
         setTitle("Metroid Map");
-        setSize(
-                Settings.DEFAULT_WINDOW_WIDTH,
-                Settings.DEFAULT_WINDOW_HEIGHT);
+        setSize(settings.defaultWindowWidth(),
+                settings.defaultWindowHeight());
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) throws IOException {
-        MetroidMap metroidMap = new MetroidMap();
-        EventQueue.invokeLater(new ComponentRunner(metroidMap));
+    public static void main(String[] args) {
+        Weld weld = new Weld();
+        try (WeldContainer weldContainer = weld.initialize()) {
+            MetroidMap metroidMap = weldContainer.select(MetroidMap.class).get();
+            EventQueue.invokeLater(new ComponentRunner(metroidMap));
+        }
     }
 }
