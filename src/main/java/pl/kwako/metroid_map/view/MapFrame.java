@@ -1,16 +1,13 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
 
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
+import pl.kwako.metroid_map.Settings;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-import java.awt.EventQueue;
+import javax.swing.*;
 import java.awt.event.KeyListener;
 
-public class MetroidMap extends JFrame {
+public class MapFrame extends JFrame {
 
     private final WindowCoordinateTranslator windowCoordinateTranslator;
     private final MapPanel mapPanel;
@@ -27,9 +24,9 @@ public class MetroidMap extends JFrame {
     }
 
     @Inject
-    public MetroidMap(WindowCoordinateTranslator windowCoordinateTranslator,
-                      MapPanel mapPanel,
-                      Settings settings) {
+    public MapFrame(WindowCoordinateTranslator windowCoordinateTranslator,
+                    MapPanel mapPanel,
+                    Settings settings) {
         super("Metroid Map");
         this.windowCoordinateTranslator = windowCoordinateTranslator;
         this.mapPanel = mapPanel;
@@ -41,13 +38,5 @@ public class MetroidMap extends JFrame {
                 settings.defaultWindowHeight());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        Weld weld = new Weld();
-        try (WeldContainer weldContainer = weld.initialize()) {
-            MetroidMap metroidMap = weldContainer.select(MetroidMap.class).get();
-            EventQueue.invokeLater(new ComponentRunner(metroidMap));
-        }
     }
 }

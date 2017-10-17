@@ -1,10 +1,11 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import pl.kwako.metroid_map.Settings;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

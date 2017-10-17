@@ -1,12 +1,11 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
+
+import pl.kwako.metroid_map.Settings;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.JPanel;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;

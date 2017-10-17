@@ -1,4 +1,6 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
+
+import pl.kwako.metroid_map.Settings;
 
 import javax.inject.Inject;
 

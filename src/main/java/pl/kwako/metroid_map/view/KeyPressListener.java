@@ -1,6 +1,6 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
 
 public interface MouseState {
     int getX();

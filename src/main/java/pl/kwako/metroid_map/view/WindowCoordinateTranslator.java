@@ -1,8 +1,8 @@
-package pl.kwako.metroid_map;
+package pl.kwako.metroid_map.view;
 
 
 import javax.inject.Singleton;
-import java.awt.Component;
+import java.awt.*;
 
 /**
  * Mutable class
