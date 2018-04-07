@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.analyzer.json;
+package pl.kwako.metroid_map.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>metroid-map</artifactId>
-        <groupId>pl.kwako</groupId>
+        <groupId>pl.kwako.metroid-map</groupId>
+        <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 	<name>Metroid Map</name>
@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se</artifactId>
+            <artifactId>weld-se-core</artifactId>
             <version>${weld.version}</version>
         </dependency>
 

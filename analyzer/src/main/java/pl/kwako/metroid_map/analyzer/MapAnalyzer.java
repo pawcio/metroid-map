@@ -1,7 +1,7 @@
 package pl.kwako.metroid_map.analyzer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.kwako.metroid_map.analyzer.map_definition.Map;
+import pl.kwako.metroid_map.map_definition.Map;
 import pl.kwako.metroid_map.analyzer.region.RegionSettings;
 
 import java.io.FileWriter;

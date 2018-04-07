@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map.analyzer;
 
-import pl.kwako.metroid_map.analyzer.json.CustomObjectMapper;
+import pl.kwako.metroid_map.json.CustomObjectMapper;
 import pl.kwako.metroid_map.analyzer.region.*;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.analyzer.map_definition;
+package pl.kwako.metroid_map.map_definition;
 
 import java.util.Collection;
 
