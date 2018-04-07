@@ -1,3 +1,5 @@
 /.idea
-/metroid-map/metroid-map.iml
-/metroid-map/target
+/metroid-map.iml
+/target
+/app/app.iml
+/app/target
