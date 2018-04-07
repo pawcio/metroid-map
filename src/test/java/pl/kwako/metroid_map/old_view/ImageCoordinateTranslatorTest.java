@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.view;
+package pl.kwako.metroid_map.old_view;
 
 import org.junit.Before;
 import org.junit.Test;

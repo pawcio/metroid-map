@@ -2,7 +2,7 @@ package pl.kwako.metroid_map;
 
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
-import pl.kwako.metroid_map.view.MapFrame;
+import pl.kwako.metroid_map.old_view.MapFrame;
 
 import java.awt.*;
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane fx:id="mainPane"
+           fx:controller="pl.kwako.metroid_map.controller.MetroidMapController"
+           xmlns:fx="http://javafx.com/fxml" alignment="center">
+
+    <Canvas fx:id="mapCanvas"/>
+
+</StackPane>

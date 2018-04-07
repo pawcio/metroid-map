@@ -1,4 +1,4 @@
-package pl.kwako.metroid_map.view;
+package pl.kwako.metroid_map.old_view;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
