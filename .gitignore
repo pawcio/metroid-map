@@ -3,3 +3,6 @@
 /target
 /app/app.iml
 /app/target
+/analyzer/analyzer.iml
+/analyzer/target
+/analyze
