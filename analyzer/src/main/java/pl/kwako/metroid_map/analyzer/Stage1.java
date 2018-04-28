@@ -1,6 +1,5 @@
 package pl.kwako.metroid_map.analyzer;
 
-import pl.kwako.metroid_map.analyzer.region.RegionSettings;
 import pl.kwako.metroid_map.map_definition.Map;
 import pl.kwako.metroid_map.map_definition.Room;
 

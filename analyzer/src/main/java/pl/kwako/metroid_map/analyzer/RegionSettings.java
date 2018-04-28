@@ -1,9 +1,9 @@
-package pl.kwako.metroid_map.analyzer.region;
+package pl.kwako.metroid_map.analyzer;
 
 import javax.json.bind.annotation.JsonbProperty;
 
 // TODO: add x and y offset here when it will be needed
-public class RegionSettings {
+class RegionSettings {
 
     @JsonbProperty("imageFileName")
     private String imageFileName;
