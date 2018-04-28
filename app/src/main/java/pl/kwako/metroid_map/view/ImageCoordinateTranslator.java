@@ -4,7 +4,7 @@ import pl.kwako.metroid_map.Settings;
 
 import javax.inject.Inject;
 
-public class ImageCoordinateTranslator {
+class ImageCoordinateTranslator {
 
     private final Settings settings;
 

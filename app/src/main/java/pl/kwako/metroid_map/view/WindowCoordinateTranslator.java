@@ -9,7 +9,7 @@ import java.awt.*;
  * stores info about offset and zoom
  */
 @Singleton
-public class WindowCoordinateTranslator {
+class WindowCoordinateTranslator {
 
     private static final int MOVE_STEP = 16;
 

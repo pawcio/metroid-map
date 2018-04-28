@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map.analyzer;
 
-public class Settings {
+class Settings {
     public static final int BLOCK_WIDTH_PIXELS = 16;
     public static final int BLOCK_HEIGHT_PIXELS = 16;
 

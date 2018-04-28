@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map;
 
-public class DefaultSettings implements Settings {
+class DefaultSettings implements Settings {
     private static final int ROOMS_SIZE_X = 30;
     private static final int ROOMS_SIZE_Y = 30;
     private static final int ROOM_IMG_WIDTH = 256;

@@ -1,30 +1,21 @@
 package pl.kwako.metroid_map.analyzer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.kwako.metroid_map.map_definition.Map;
 import pl.kwako.metroid_map.analyzer.region.RegionSettings;
+import pl.kwako.metroid_map.persistence.ObjectRepository;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
-public class MapAnalyzer {
+class MapAnalyzer {
 
     private final Stage1 stage1;
-    private final ObjectMapper objectMapper;
+    private final ObjectRepository objectRepository;
 
-    public MapAnalyzer(Stage1 stage1, ObjectMapper objectMapper) {
+    public MapAnalyzer(Stage1 stage1, ObjectRepository objectRepository) {
         this.stage1 = stage1;
-        this.objectMapper = objectMapper;
+        this.objectRepository = objectRepository;
     }
 
-    public void parseRegionStage1(RegionSettings regionSettings) throws IOException, NoSuchAlgorithmException {
-        Map stage1Result = stage1.runStage1(regionSettings);
-
-        String serializedMap = objectMapper.writeValueAsString(stage1Result);
-
-        try (FileWriter resultsFile = new FileWriter(String.format("analyze/%s/stage01_result.json", regionSettings.getImageFileName()))) {
-            resultsFile.write(serializedMap);
-        }
+    public void parseRegionStage1(RegionSettings regionSettings) {
+        var stage1Result = stage1.runStage1(regionSettings);
+        var filePath = String.format("analyze/%s/stage01_result.json", regionSettings.getImageFileName());
+        objectRepository.toFile(stage1Result, filePath);
     }
 }

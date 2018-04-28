@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static java.awt.event.KeyEvent.*;
 
-public class KeyPressListener extends KeyAdapter {
+class KeyPressListener extends KeyAdapter {
 
     private final WindowCoordinateTranslator windowCoordinateTranslator;
     private final Component component;
@@ -54,7 +54,7 @@ public class KeyPressListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        Integer action = keyToActionMapping.get(e.getKeyCode());
+        var action = keyToActionMapping.get(e.getKeyCode());
 
         if (action != null) {
             setAction(action);
@@ -65,7 +65,7 @@ public class KeyPressListener extends KeyAdapter {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        Integer action = keyToActionMapping.get(e.getKeyCode());
+        var action = keyToActionMapping.get(e.getKeyCode());
 
         if (action != null) {
             unsetAction(action);

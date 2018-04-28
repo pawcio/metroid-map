@@ -14,12 +14,11 @@
 
     <dependencies>
 
-        <!-- inter dependencies-->
+        <!-- INTER dependencies-->
 
         <dependency>
             <groupId>pl.kwako.metroid-map</groupId>
             <artifactId>common</artifactId>
-            <version>${root.version}</version>
         </dependency>
     </dependencies>
 </project>

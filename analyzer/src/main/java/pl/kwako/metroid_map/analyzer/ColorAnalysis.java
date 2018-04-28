@@ -3,17 +3,29 @@ package pl.kwako.metroid_map.analyzer;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-public class ColorAnalysis {
+class ColorAnalysis {
+
+    private static final int LEFT_DOOR_START_X = 16;
+    private static final int LEFT_DOOR_END_X = 24;
+    private static final int RIGHT_DOOR_START_X = 232;
+    private static final int RIGHT_DOOR_END_X = 224;
+    private static final int DOOR_PART_START_Y = 94;
+    private static final int DOOR_PART_WIDTH = 8;
+    private static final int DOOR_PART_HEIGHT = 20;
+    private static final int EMPTY_DOOR_PART_Y = 80;
+    private static final int EMPTY_DOOR_PART_WIDTH = 8;
+    private static final int EMPTY_DOOR_PART_HEIGHT = 48;
+    private static final int COLOR_PALETTE_SIZE = 25;// there are 25 possible colors in the whole map.
 
     public boolean isSingleColor(BufferedImage image) {
-        int firstColor = image.getRGB(0, 0);
+        var firstColor = image.getRGB(0, 0);
 
         return isSingleColor(image, firstColor);
     }
 
     public boolean isSingleColor(BufferedImage image, int expectedColor) {
-        for (int x = 0; x < image.getWidth(); ++x) {
-            for (int y = 0; y < image.getHeight(); ++y) {
+        for (var x = 0; x < image.getWidth(); ++x) {
+            for (var y = 0; y < image.getHeight(); ++y) {
                 if (image.getRGB(x, y) != expectedColor) {
                     return false;
                 }
@@ -45,7 +57,7 @@ public class ColorAnalysis {
      * @return
      */
     public boolean hasLeftDoor(BufferedImage roomImage) {
-        return detectDoor(roomImage, 16, 24);
+        return detectDoor(roomImage, LEFT_DOOR_START_X, LEFT_DOOR_END_X);
     }
 
     /**
@@ -70,7 +82,7 @@ public class ColorAnalysis {
      * @return
      */
     public boolean hasRightDoor(BufferedImage roomImage) {
-        return detectDoor(roomImage, 232, 224);
+        return detectDoor(roomImage, RIGHT_DOOR_START_X, RIGHT_DOOR_END_X);
     }
 
     /**
@@ -83,15 +95,16 @@ public class ColorAnalysis {
      * @return
      */
     public boolean detectDoor(BufferedImage roomImage, int doorPartX, int emptyPartX) {
-        BufferedImage doorPart = roomImage.getSubimage(doorPartX, 94, 8, 20);
-        Set<Integer> doorColors = distinctColors(doorPart);
+        var doorPart = roomImage.getSubimage(doorPartX, DOOR_PART_START_Y, DOOR_PART_WIDTH, DOOR_PART_HEIGHT);
+        var doorColors = distinctColors(doorPart);
 
         if (doorColors.size() > 1 || doorColors.contains(ColorConstants.BLACK)) {
             return false;
         }
 
-        BufferedImage emptyPart = roomImage.getSubimage(emptyPartX, 80, 8, 48);
-        Set<Integer> emptyColors = distinctColors(emptyPart);
+        var emptyPart = roomImage.getSubimage(emptyPartX, EMPTY_DOOR_PART_Y,
+                EMPTY_DOOR_PART_WIDTH, EMPTY_DOOR_PART_HEIGHT);
+        var emptyColors = distinctColors(emptyPart);
 
         if (emptyColors.size() > 1 || !emptyColors.contains(ColorConstants.BLACK)) {
             return false;
@@ -103,9 +116,9 @@ public class ColorAnalysis {
     public Set<Integer> distinctColors(BufferedImage roomImage) {
         Set<Integer> distinctColors = new HashSet<>();
 
-        for (int x = 0; x < roomImage.getWidth(); ++x) {
-            for (int y = 0; y < roomImage.getHeight(); ++y) {
-                int rgb = roomImage.getRGB(x, y);
+        for (var x = 0; x < roomImage.getWidth(); ++x) {
+            for (var y = 0; y < roomImage.getHeight(); ++y) {
+                var rgb = roomImage.getRGB(x, y);
                 distinctColors.add(rgb);
             }
         }
@@ -121,15 +134,15 @@ public class ColorAnalysis {
      */
     public int dominantColor(BufferedImage roomImage) {
 
-        Map<Integer, Integer> colorCount = new HashMap<>(25); // there are 25 possible colors in the whole map.
+        Map<Integer, Integer> colorCount = new HashMap<>(COLOR_PALETTE_SIZE);
 
-        for (int x = 0; x < roomImage.getWidth(); ++x) {
-            for (int y = 0; y < roomImage.getHeight(); ++y) {
+        for (var x = 0; x < roomImage.getWidth(); ++x) {
+            for (var y = 0; y < roomImage.getHeight(); ++y) {
 
-                int rgb = roomImage.getRGB(x, y);
+                var rgb = roomImage.getRGB(x, y);
 
                 if (colorCount.containsKey(rgb)) {
-                    Integer currentCount = colorCount.get(rgb);
+                    var currentCount = colorCount.get(rgb);
                     colorCount.put(rgb, currentCount + 1);
                 } else {
                     colorCount.put(rgb, 1);
@@ -137,7 +150,7 @@ public class ColorAnalysis {
             }
         }
 
-        Optional<Map.Entry<Integer, Integer>> max = colorCount.entrySet().stream()
+        var max = colorCount.entrySet().stream()
                 .filter(entrySet -> entrySet.getKey() != ColorConstants.BLACK)
                 .max(Comparator.comparing(Map.Entry::getValue));
 

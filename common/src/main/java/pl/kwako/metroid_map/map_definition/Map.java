@@ -9,6 +9,10 @@ public class Map {
     private Integer roomHeight;
     private Collection<Room> rooms;
 
+    private Map() {
+        // default constructor used in deserialization
+    }
+
     public Map(Integer mapWidth, Integer mapHeight, Integer roomWidth, Integer roomHeight, Collection<Room> rooms) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;

@@ -13,7 +13,8 @@
         <root.artifactId>parent</root.artifactId>
         <root.version>1.0-SNAPSHOT</root.version>
 
-        <jackson.version>2.9.5</jackson.version>
+        <yasson.version>1.0.1</yasson.version>
+        <javax.json.version>1.1.2</javax.json.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.17.0</mockito.version>
         <weld.version>3.0.3.Final</weld.version>
@@ -31,5 +32,47 @@
         <module>common</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- INTER dependencies -->
+            <dependency>
+                <groupId>pl.kwako.metroid-map</groupId>
+                <artifactId>common</artifactId>
+                <version>${root.version}</version>
+            </dependency>
+
+            <!-- EXTERNAL dependencies -->
+
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${weld.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse</groupId>
+                <artifactId>yasson</artifactId>
+                <version>${yasson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <version>${javax.json.version}</version>
+            </dependency>
+
+            <!-- TEST dependencies -->
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map.view;
 
-public interface MouseState {
+interface MouseState {
     int getX();
 
     int getY();

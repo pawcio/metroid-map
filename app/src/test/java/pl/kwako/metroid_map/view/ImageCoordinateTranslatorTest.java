@@ -21,7 +21,7 @@ public class ImageCoordinateTranslatorTest {
     private Settings settings;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         imageCoordinateTranslator = new ImageCoordinateTranslator(settings);
         doReturn(3).when(settings).roomImgWidth();
         doReturn(5).when(settings).roomImgHeight();
@@ -34,7 +34,7 @@ public class ImageCoordinateTranslatorTest {
 
     @Test
     public void imageXMultipliesByRoomWidth() {
-        int imageX = imageCoordinateTranslator.toImageX(2);
+        var imageX = imageCoordinateTranslator.toImageX(2);
         verify(settings).roomImgWidth();
         assertThat(imageX, is(2 * 3));
     }
@@ -46,7 +46,7 @@ public class ImageCoordinateTranslatorTest {
 
     @Test
     public void imageYMultipliesByRoomHeight() {
-        int imageX = imageCoordinateTranslator.toImageY(2);
+        var imageX = imageCoordinateTranslator.toImageY(2);
         verify(settings).roomImgHeight();
         assertThat(imageX, is(2 * 5));
     }

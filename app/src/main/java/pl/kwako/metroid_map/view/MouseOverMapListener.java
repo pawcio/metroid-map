@@ -5,7 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class MouseOverMapListener extends MouseAdapter implements MouseState {
+class MouseOverMapListener extends MouseAdapter implements MouseState {
 
     private int x;
     private int y;
@@ -45,7 +45,7 @@ public class MouseOverMapListener extends MouseAdapter implements MouseState {
 
     @Override
     public int popWheelRotation() {
-        int lastRotation = wheelRotation;
+        var lastRotation = wheelRotation;
 
         wheelRotation = 0;
 

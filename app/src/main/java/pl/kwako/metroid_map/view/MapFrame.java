@@ -17,7 +17,7 @@ public class MapFrame extends JFrame {
         KeyListener keyPressListener = new KeyPressListener(windowCoordinateTranslator, this);
         addKeyListener(keyPressListener);
 
-        MouseOverMapListener mouseOverMapListener = new MouseOverMapListener(this);
+        var mouseOverMapListener = new MouseOverMapListener(this);
         addMouseMotionListener(mouseOverMapListener);
         addMouseWheelListener(mouseOverMapListener);
         mapPanel.setMouseState(mouseOverMapListener);

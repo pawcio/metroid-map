@@ -1,22 +1,21 @@
 package pl.kwako.metroid_map.analyzer;
 
+import pl.kwako.metroid_map.analyzer.region.RegionSettings;
 import pl.kwako.metroid_map.map_definition.Map;
 import pl.kwako.metroid_map.map_definition.Room;
-import pl.kwako.metroid_map.analyzer.region.RegionSettings;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
+import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
 
 import static pl.kwako.metroid_map.analyzer.Settings.*;
 
-public class Stage1 {
+class Stage1 {
 
     private final ImageHash imageHash;
     private final ColorAnalysis colorAnalysis;
@@ -26,14 +25,14 @@ public class Stage1 {
         this.colorAnalysis = colorAnalysis;
     }
 
-    public Map runStage1(RegionSettings regionSettings) throws IOException, NoSuchAlgorithmException {
+    public Map runStage1(RegionSettings regionSettings) {
 
-        BufferedImage mapImage = readMapImage(regionSettings);
+        var mapImage = readMapImage(regionSettings);
 
         Collection<Room> rooms = new LinkedList<>();
 
-        for (int x = 0; x < regionSettings.getRoomCountX(); ++x) {
-            for (int y = 0; y < regionSettings.getRoomCountY(); ++y) {
+        for (var x = 0; x < regionSettings.getRoomCountX(); ++x) {
+            for (var y = 0; y < regionSettings.getRoomCountY(); ++y) {
                 parseRoom(regionSettings, mapImage, x, y)
                         .ifPresent(rooms::add);
             }
@@ -48,18 +47,20 @@ public class Stage1 {
         );
     }
 
-    private BufferedImage readMapImage(RegionSettings regionSettings) throws IOException {
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(regionSettings.getImageFileName() + ".png")) {
+    private BufferedImage readMapImage(RegionSettings regionSettings) {
+        try (var resourceAsStream = getClass().getClassLoader().getResourceAsStream(
+                regionSettings.getImageFileName() + ".png")) {
             return ImageIO.read(resourceAsStream);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
-    private Optional<Room> parseRoom(RegionSettings regionSettings, BufferedImage mapImage, int roomX, int roomY) throws IOException, NoSuchAlgorithmException {
+    private Optional<Room> parseRoom(RegionSettings regionSettings, BufferedImage mapImage, int roomX, int roomY) {
 
-        int roomImageX = ROOM_WIDTH_PIXELS * roomX;
-        int roomImageY = ROOM_HEIGHT_PIXELS * roomY;
-
-        BufferedImage roomImage = mapImage.getSubimage(roomImageX, roomImageY, ROOM_WIDTH_PIXELS, ROOM_HEIGHT_PIXELS);
+        var roomImageX = ROOM_WIDTH_PIXELS * roomX;
+        var roomImageY = ROOM_HEIGHT_PIXELS * roomY;
+        var roomImage = mapImage.getSubimage(roomImageX, roomImageY, ROOM_WIDTH_PIXELS, ROOM_HEIGHT_PIXELS);
 
         // skip empty spaces
         if (colorAnalysis.isSingleColor(roomImage)) {
@@ -71,36 +72,38 @@ public class Stage1 {
 
     /**
      * split whole map into rooms, find distinct rooms and return info about room locations.
-     *
-     * @param roomImage
-     * @param roomX
-     * @param roomY
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
      */
-    private Room saveStage1(RegionSettings regionSettings, BufferedImage roomImage, int roomX, int roomY) throws IOException, NoSuchAlgorithmException {
+    private Room saveStage1(RegionSettings regionSettings, BufferedImage roomImage, int roomX, int roomY) {
 
-        String md5name = imageHash.getImageHash(roomImage);
-        boolean hasLeftDoor = colorAnalysis.hasLeftDoor(roomImage);
-        boolean hasRightDoor = colorAnalysis.hasRightDoor(roomImage);
+        var md5name = imageHash.getImageHash(roomImage);
+        var hasLeftDoor = colorAnalysis.hasLeftDoor(roomImage);
+        var hasRightDoor = colorAnalysis.hasRightDoor(roomImage);
 
-        File outFile = new File(String.format("analyze/%s/hd/map_%s.png", regionSettings.getImageFileName(), md5name));
-
+        var outFile = new File(String.format("analyze/%s/hd/map_%s.png", regionSettings.getImageFileName(), md5name));
         if (!outFile.exists()) {
             outFile.mkdirs();
-            ImageIO.write(roomImage, "png", outFile);
+            try {
+                ImageIO.write(roomImage, "png", outFile);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
         }
 
 
-        SimplifiedRoomImage simpleRoom = renderSimplifiedRoom(roomImage);
-        String roomHashCode = ((Integer) simpleRoom.hashCode()).toString();
-        BufferedImage image = simpleRoom.createImage();
+        var simpleRoom = renderSimplifiedRoom(roomImage);
+        var roomHashCode = ((Integer) simpleRoom.hashCode()).toString();
+        var image = simpleRoom.createImage();
 
-        File simpleOutFile = new File(String.format("analyze/%s/sd/map_%s.png", regionSettings.getImageFileName(), roomHashCode));
+        var simpleOutFile = new File(String.format("analyze/%s/sd/map_%s.png", regionSettings.getImageFileName(),
+                roomHashCode));
 
         if (!simpleOutFile.exists()) {
             simpleOutFile.mkdirs();
-            ImageIO.write(image, "png", simpleOutFile);
+            try {
+                ImageIO.write(image, "png", simpleOutFile);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
         }
 
         return new Room(roomX, roomY, roomHashCode, hasLeftDoor, hasRightDoor);
@@ -108,11 +111,11 @@ public class Stage1 {
 
     private SimplifiedRoomImage renderSimplifiedRoom(BufferedImage roomImage) {
 
-        SimplifiedRoomImage simplifiedRoomImage = new SimplifiedRoomImage();
+        var simplifiedRoomImage = new SimplifiedRoomImage();
 
-        for (int blockX = 0; blockX < ROOM_WIDTH_BLOCKS; ++blockX) {
-            for (int blockY = 0; blockY < ROOM_HEIGHT_BLOCKS; ++blockY) {
-                int dominantColor = getDominantColor(roomImage, blockX, blockY);
+        for (var blockX = 0; blockX < ROOM_WIDTH_BLOCKS; ++blockX) {
+            for (var blockY = 0; blockY < ROOM_HEIGHT_BLOCKS; ++blockY) {
+                var dominantColor = getDominantColor(roomImage, blockX, blockY);
                 simplifiedRoomImage.setBlock(blockX, blockY, dominantColor);
             }
         }
@@ -121,7 +124,7 @@ public class Stage1 {
     }
 
     private int getDominantColor(BufferedImage roomImage, int blockX, int blockY) {
-        BufferedImage blockImage = roomImage.getSubimage(
+        var blockImage = roomImage.getSubimage(
                 blockX * BLOCK_WIDTH_PIXELS,
                 blockY * BLOCK_HEIGHT_PIXELS,
                 BLOCK_WIDTH_PIXELS,

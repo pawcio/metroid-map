@@ -7,6 +7,10 @@ public class Room {
     private boolean hasLeftDoor;
     private boolean hasRightDoor;
 
+    private Room() {
+        // default constructor used in deserialization
+    }
+
     public Room(Integer x, Integer y, String hash, boolean hasLeftDoor, boolean hasRightDoor) {
         this.x = x;
         this.y = y;

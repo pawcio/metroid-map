@@ -1,28 +1,34 @@
 package pl.kwako.metroid_map.analyzer;
 
-import pl.kwako.metroid_map.json.CustomObjectMapper;
-import pl.kwako.metroid_map.analyzer.region.*;
+import pl.kwako.metroid_map.analyzer.region.RegionSettings;
+import pl.kwako.metroid_map.persistence.ObjectRepository;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+class Main {
 
-public class Main {
+    private static final String[] regions = {
+            "Brinstar.json",
+            "KraidsHideout.json",
+            "Norfair.json",
+            "RidleyHideout.json",
+            "Tourian.json",
+            "MetroidCompleateMap.json",
+    };
 
-    public static void main(String... args) throws IOException, NoSuchAlgorithmException {
+    public static void main(String... args) {
 
-        MapAnalyzer mapAnalyzer = new MapAnalyzer(
+        ObjectRepository objectRepository = new ObjectRepository();
+
+        var mapAnalyzer = new MapAnalyzer(
                 new Stage1(
                         new ImageHash(),
                         new ColorAnalysis()
                 ),
-                new CustomObjectMapper()
+                objectRepository
         );
 
-        mapAnalyzer.parseRegionStage1(new BrinstarRegionSettings());
-        mapAnalyzer.parseRegionStage1(new KraidsHideoutRegionSettings());
-        mapAnalyzer.parseRegionStage1(new NorfairRegionSettings());
-        mapAnalyzer.parseRegionStage1(new RidleyHideoutRegionSettings());
-        mapAnalyzer.parseRegionStage1(new TourianRegionSettings());
-        mapAnalyzer.parseRegionStage1(new WholeMapRegionSettings());
+        for (String region : regions) {
+            RegionSettings regionSettings = objectRepository.fromResource(region, RegionSettings.class);
+            mapAnalyzer.parseRegionStage1(regionSettings);
+        }
     }
 }

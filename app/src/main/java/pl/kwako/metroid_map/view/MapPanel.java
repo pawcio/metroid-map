@@ -8,9 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.UncheckedIOException;
 
-public class MapPanel extends JPanel {
+class MapPanel extends JPanel {
 
     private final WindowCoordinateTranslator windowCoordinateTranslator;
     private final ImageCoordinateTranslator imageCoordinate;
@@ -20,7 +20,7 @@ public class MapPanel extends JPanel {
 
     @Inject
     public MapPanel(WindowCoordinateTranslator windowCoordinateTranslator,
-                    ImageCoordinateTranslator imageCoordinate, Settings settings) throws IOException {
+                    ImageCoordinateTranslator imageCoordinate, Settings settings) {
 
         this.windowCoordinateTranslator = windowCoordinateTranslator;
         this.imageCoordinate = imageCoordinate;
@@ -29,8 +29,10 @@ public class MapPanel extends JPanel {
         setBackground(new Color(32, 32, 32));
 
         // TODO: implement loading map definition from file.
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("MetroidCompleateMapBG.png")) {
+        try (var resourceAsStream = getClass().getClassLoader().getResourceAsStream("MetroidCompleateMapBG.png")) {
             mapImage = ImageIO.read(resourceAsStream);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -39,15 +41,15 @@ public class MapPanel extends JPanel {
     }
 
     private void drawMapBackgound(Graphics2D g2d) {
-        for (int x = 0; x < settings.roomsSizeX(); ++x) {
-            for (int y = 0; y < settings.roomsSizeY(); ++y) {
+        for (var x = 0; x < settings.roomsSizeX(); ++x) {
+            for (var y = 0; y < settings.roomsSizeY(); ++y) {
                 drawRoom(g2d, x, y);
             }
         }
     }
 
     private void drawGrid(Graphics2D g2d) {
-        for (int x = 0; x <= settings.roomsSizeX(); ++x) {
+        for (var x = 0; x <= settings.roomsSizeX(); ++x) {
             g2d.drawLine(
                     windowCoordinateTranslator.toWindowX(this, x),
                     0,
@@ -56,7 +58,7 @@ public class MapPanel extends JPanel {
             );
         }
 
-        for (int y = 0; y <= settings.roomsSizeY(); ++y) {
+        for (var y = 0; y <= settings.roomsSizeY(); ++y) {
             g2d.drawLine(
                     0,
                     windowCoordinateTranslator.toWindowY(this, y),
@@ -86,7 +88,7 @@ public class MapPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2d = (Graphics2D) g.create();
+        var g2d = (Graphics2D) g.create();
 
         updateZoom();
         drawMapBackgound(g2d);
@@ -97,16 +99,16 @@ public class MapPanel extends JPanel {
     }
 
     private void updateZoom() {
-        int wheelRotation = mouseState.popWheelRotation() * 2;
+        var wheelRotation = mouseState.popWheelRotation() * 2;
 
         if (wheelRotation > 0) {
-            for (int i = 0; i < wheelRotation; ++i) {
+            for (var i = 0; i < wheelRotation; ++i) {
                 windowCoordinateTranslator.zoomOut();
             }
         }
 
         if (wheelRotation < 0) {
-            for (int i = 0; i > wheelRotation; --i) {
+            for (var i = 0; i > wheelRotation; --i) {
                 windowCoordinateTranslator.zoomIn();
             }
         }
@@ -114,7 +116,7 @@ public class MapPanel extends JPanel {
 
     private void drawCursor(Graphics2D g2d) {
 
-        int mapX = windowCoordinateTranslator.toMapX(this, mouseState.getX());
+        var mapX = windowCoordinateTranslator.toMapX(this, mouseState.getX());
 
         if (mapX < 0) {
             mapX = 0;
@@ -124,10 +126,10 @@ public class MapPanel extends JPanel {
             mapX = settings.roomsSizeX() - 1;
         }
 
-        int x1 = windowCoordinateTranslator.toWindowX(this, mapX);
-        int x2 = windowCoordinateTranslator.toWindowX(this, 1 + mapX);
+        var x1 = windowCoordinateTranslator.toWindowX(this, mapX);
+        var x2 = windowCoordinateTranslator.toWindowX(this, 1 + mapX);
 
-        int mapY = windowCoordinateTranslator.toMapY(this, mouseState.getY());
+        var mapY = windowCoordinateTranslator.toMapY(this, mouseState.getY());
 
         if (mapY < 0) {
             mapY = 0;
@@ -137,8 +139,8 @@ public class MapPanel extends JPanel {
             mapY = settings.roomsSizeY() - 1;
         }
 
-        int y1 = windowCoordinateTranslator.toWindowY(this, mapY);
-        int y2 = windowCoordinateTranslator.toWindowY(this, 1 + mapY);
+        var y1 = windowCoordinateTranslator.toWindowY(this, mapY);
+        var y2 = windowCoordinateTranslator.toWindowY(this, 1 + mapY);
 
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
