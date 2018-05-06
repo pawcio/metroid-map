@@ -2,32 +2,27 @@ package pl.kwako.metroid_map.analyzer;
 
 import pl.kwako.metroid_map.persistence.ObjectRepository;
 
+import java.util.List;
+
 class Main {
 
-    private static final String[] regions = {
+    private static final List<String> regions = List.of(
             "Brinstar.json",
             "KraidsHideout.json",
             "Norfair.json",
             "RidleyHideout.json",
             "Tourian.json",
-            "MetroidCompleateMap.json",
-    };
+            "MetroidCompleateMap.json");
 
     public static void main(String... args) {
-
-        ObjectRepository objectRepository = new ObjectRepository();
-
         var mapAnalyzer = new MapAnalyzer(
                 new Stage1(
                         new ImageHash(),
                         new ColorAnalysis()
                 ),
-                objectRepository
+                new ObjectRepository()
         );
 
-        for (String region : regions) {
-            RegionSettings regionSettings = objectRepository.fromResource(region, RegionSettings.class);
-            mapAnalyzer.parseRegionStage1(regionSettings);
-        }
+        regions.parallelStream().forEach(mapAnalyzer::analyzeFile);
     }
 }

@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map;
 
-import java.awt.*;
+import java.awt.Frame;
 
 class ComponentRunner implements Runnable {
 

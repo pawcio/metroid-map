@@ -1,6 +1,6 @@
 package pl.kwako.metroid_map.view;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -12,7 +12,7 @@ class MouseOverMapListener extends MouseAdapter implements MouseState {
     private int wheelRotation;
     private final Component component;
 
-    public MouseOverMapListener(Component component) {
+    MouseOverMapListener(Component component) {
         this.component = component;
     }
 

@@ -1,13 +1,20 @@
 package pl.kwako.metroid_map.analyzer;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-import static pl.kwako.metroid_map.analyzer.Settings.*;
+import static pl.kwako.metroid_map.analyzer.Settings.BLOCK_HEIGHT_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.BLOCK_WIDTH_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_HEIGHT_BLOCKS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_HEIGHT_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_WIDTH_BLOCKS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_WIDTH_PIXELS;
 
 class SimplifiedRoomImage {
-    private int[][] blocks = new int[ROOM_WIDTH_BLOCKS][ROOM_HEIGHT_BLOCKS];
+    private final int[][] blocks = new int[ROOM_WIDTH_BLOCKS][ROOM_HEIGHT_BLOCKS];
 
     public void setBlock(int x, int y, int color) {
         blocks[x][y] = color;

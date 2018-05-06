@@ -12,14 +12,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
 
-import static pl.kwako.metroid_map.analyzer.Settings.*;
+import static pl.kwako.metroid_map.analyzer.Settings.BLOCK_HEIGHT_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.BLOCK_WIDTH_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_HEIGHT_BLOCKS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_HEIGHT_PIXELS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_WIDTH_BLOCKS;
+import static pl.kwako.metroid_map.analyzer.Settings.ROOM_WIDTH_PIXELS;
 
 class Stage1 {
 
     private final ImageHash imageHash;
     private final ColorAnalysis colorAnalysis;
 
-    public Stage1(ImageHash imageHash, ColorAnalysis colorAnalysis) {
+    Stage1(ImageHash imageHash, ColorAnalysis colorAnalysis) {
         this.imageHash = imageHash;
         this.colorAnalysis = colorAnalysis;
     }
@@ -40,8 +45,8 @@ class Stage1 {
         return new Map(
                 regionSettings.getRoomCountX(),
                 regionSettings.getRoomCountY(),
-                Settings.ROOM_WIDTH_PIXELS,
-                Settings.ROOM_HEIGHT_PIXELS,
+                ROOM_WIDTH_PIXELS,
+                ROOM_HEIGHT_PIXELS,
                 rooms
         );
     }

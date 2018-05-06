@@ -4,11 +4,13 @@ import pl.kwako.metroid_map.Settings;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.event.KeyListener;
 
 public class MapFrame extends JFrame {
 
+    private static final String TITLE = "Metroid Map";
     private final WindowCoordinateTranslator windowCoordinateTranslator;
     private final MapPanel mapPanel;
 
@@ -27,13 +29,13 @@ public class MapFrame extends JFrame {
     public MapFrame(WindowCoordinateTranslator windowCoordinateTranslator,
                     MapPanel mapPanel,
                     Settings settings) {
-        super("Metroid Map");
+        super(TITLE);
         this.windowCoordinateTranslator = windowCoordinateTranslator;
         this.mapPanel = mapPanel;
 
         add(mapPanel);
 
-        setTitle("Metroid Map");
+        setTitle(TITLE);
         setSize(settings.defaultWindowWidth(),
                 settings.defaultWindowHeight());
         setLocationRelativeTo(null);

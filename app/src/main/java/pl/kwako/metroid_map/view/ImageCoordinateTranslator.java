@@ -9,7 +9,7 @@ class ImageCoordinateTranslator {
     private final Settings settings;
 
     @Inject
-    public ImageCoordinateTranslator(Settings settings) {
+    ImageCoordinateTranslator(Settings settings) {
         this.settings = settings;
     }
 

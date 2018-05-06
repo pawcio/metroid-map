@@ -2,7 +2,7 @@ package pl.kwako.metroid_map.view;
 
 
 import javax.inject.Singleton;
-import java.awt.*;
+import java.awt.Component;
 
 /**
  * Mutable class

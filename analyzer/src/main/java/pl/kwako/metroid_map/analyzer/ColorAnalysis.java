@@ -1,7 +1,12 @@
 package pl.kwako.metroid_map.analyzer;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 class ColorAnalysis {
 
@@ -23,7 +28,7 @@ class ColorAnalysis {
         return isSingleColor(image, firstColor);
     }
 
-    public boolean isSingleColor(BufferedImage image, int expectedColor) {
+    private boolean isSingleColor(BufferedImage image, int expectedColor) {
         for (var x = 0; x < image.getWidth(); ++x) {
             for (var y = 0; y < image.getHeight(); ++y) {
                 if (image.getRGB(x, y) != expectedColor) {
@@ -48,7 +53,7 @@ class ColorAnalysis {
      * asterisk area * - is always one solid, non-black color (yellow, red, pink etc)
      * this area is located in (16, 94) and has dimensions of 8 x 20
      * <p>
-     * hashtag area  # - is always black
+     * hash area  # - is always black
      * this area is located in (24, 80) and has dimensions of 8 x 48
      * <p>
      * this method check solid color areas to determine if there are doors there.
@@ -57,7 +62,7 @@ class ColorAnalysis {
      * @return
      */
     public boolean hasLeftDoor(BufferedImage roomImage) {
-        return detectDoor(roomImage, LEFT_DOOR_START_X, LEFT_DOOR_END_X);
+        return hasDoor(roomImage, LEFT_DOOR_START_X, LEFT_DOOR_END_X);
     }
 
     /**
@@ -73,7 +78,7 @@ class ColorAnalysis {
      * asterisk area * - is always one solid, non-black color (yellow, red, pink etc)
      * this area is located in (232, 94) and has dimensions of 8 x 20
      * <p>
-     * hashtag area  # - is always black
+     * hash area  # - is always black
      * this area is located in (224, 80) and has dimensions of 8 x 48
      * <p>
      * this method check solid color areas to determine if there are doors there.
@@ -82,7 +87,7 @@ class ColorAnalysis {
      * @return
      */
     public boolean hasRightDoor(BufferedImage roomImage) {
-        return detectDoor(roomImage, RIGHT_DOOR_START_X, RIGHT_DOOR_END_X);
+        return hasDoor(roomImage, RIGHT_DOOR_START_X, RIGHT_DOOR_END_X);
     }
 
     /**
@@ -94,7 +99,7 @@ class ColorAnalysis {
      * @param emptyPartX
      * @return
      */
-    public boolean detectDoor(BufferedImage roomImage, int doorPartX, int emptyPartX) {
+    private boolean hasDoor(BufferedImage roomImage, int doorPartX, int emptyPartX) {
         var doorPart = roomImage.getSubimage(doorPartX, DOOR_PART_START_Y, DOOR_PART_WIDTH, DOOR_PART_HEIGHT);
         var doorColors = distinctColors(doorPart);
 
@@ -106,14 +111,10 @@ class ColorAnalysis {
                 EMPTY_DOOR_PART_WIDTH, EMPTY_DOOR_PART_HEIGHT);
         var emptyColors = distinctColors(emptyPart);
 
-        if (emptyColors.size() > 1 || !emptyColors.contains(ColorConstants.BLACK)) {
-            return false;
-        }
-
-        return true;
+        return emptyColors.size() <= 1 && emptyColors.contains(ColorConstants.BLACK);
     }
 
-    public Set<Integer> distinctColors(BufferedImage roomImage) {
+    private Set<Integer> distinctColors(BufferedImage roomImage) {
         Set<Integer> distinctColors = new HashSet<>();
 
         for (var x = 0; x < roomImage.getWidth(); ++x) {
@@ -133,7 +134,6 @@ class ColorAnalysis {
      * @return
      */
     public int dominantColor(BufferedImage roomImage) {
-
         Map<Integer, Integer> colorCount = new HashMap<>(COLOR_PALETTE_SIZE);
 
         for (var x = 0; x < roomImage.getWidth(); ++x) {
@@ -152,9 +152,8 @@ class ColorAnalysis {
 
         var max = colorCount.entrySet().stream()
                 .filter(entrySet -> entrySet.getKey() != ColorConstants.BLACK)
-                .max(Comparator.comparing(Map.Entry::getValue));
-
-        return max.map(Map.Entry::getKey)
+                .max(Comparator.comparing(Entry::getValue));
+        return max.map(Entry::getKey)
                 .orElse(ColorConstants.BLACK);
     }
 }

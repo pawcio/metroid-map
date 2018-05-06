@@ -1,13 +1,16 @@
 package pl.kwako.metroid_map.map_definition;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class Map {
     private Integer mapWidth;
     private Integer mapHeight;
     private Integer roomWidth;
     private Integer roomHeight;
-    private Collection<Room> rooms;
+    private List<Room> rooms;
 
     private Map() {
         // default constructor used in deserialization
@@ -18,7 +21,7 @@ public class Map {
         this.mapHeight = mapHeight;
         this.roomWidth = roomWidth;
         this.roomHeight = roomHeight;
-        this.rooms = rooms;
+        this.rooms = new ArrayList<>(rooms);
     }
 
     public Integer getMapWidth() {
@@ -38,6 +41,6 @@ public class Map {
     }
 
     public Collection<Room> getRooms() {
-        return rooms;
+        return Collections.unmodifiableCollection(rooms);
     }
 }

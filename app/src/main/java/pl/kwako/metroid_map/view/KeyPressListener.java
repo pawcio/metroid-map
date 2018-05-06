@@ -1,12 +1,23 @@
 package pl.kwako.metroid_map.view;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_D;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_E;
+import static java.awt.event.KeyEvent.VK_LEFT;
+import static java.awt.event.KeyEvent.VK_PAGE_DOWN;
+import static java.awt.event.KeyEvent.VK_PAGE_UP;
+import static java.awt.event.KeyEvent.VK_Q;
+import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.VK_S;
+import static java.awt.event.KeyEvent.VK_UP;
+import static java.awt.event.KeyEvent.VK_W;
 
 class KeyPressListener extends KeyAdapter {
 
@@ -25,9 +36,9 @@ class KeyPressListener extends KeyAdapter {
     private static final int ZOOM_IN = 0b10000;
     private static final int ZOOM_OUT = 0b100000;
 
-    private Map<Integer, Integer> keyToActionMapping = new HashMap<>();
+    private final Map<Integer, Integer> keyToActionMapping = new HashMap<>();
 
-    public KeyPressListener(WindowCoordinateTranslator windowCoordinateTranslator, Component component) {
+    KeyPressListener(WindowCoordinateTranslator windowCoordinateTranslator, Component component) {
         this.windowCoordinateTranslator = windowCoordinateTranslator;
         this.component = component;
 
