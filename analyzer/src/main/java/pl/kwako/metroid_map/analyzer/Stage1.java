@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import static pl.kwako.metroid_map.analyzer.Settings.BLOCK_HEIGHT_PIXELS;
@@ -33,7 +33,7 @@ class Stage1 {
 
         var mapImage = readMapImage(regionSettings);
 
-        Collection<Room> rooms = new LinkedList<>();
+        List<Room> rooms = new LinkedList<>();
 
         for (var x = 0; x < regionSettings.getRoomCountX(); ++x) {
             for (var y = 0; y < regionSettings.getRoomCountY(); ++y) {

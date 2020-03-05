@@ -13,6 +13,9 @@
         <root.artifactId>parent</root.artifactId>
         <root.version>1.0-SNAPSHOT</root.version>
 
+        <!-- Kotlin settings -->
+        <kotlin.compiler.jvmTarget>12</kotlin.compiler.jvmTarget>
+
         <!-- Dependency versions -->
         <yasson.version>1.0.6</yasson.version>
         <javax.json.version>1.1.4</javax.json.version>
